@@ -11,7 +11,7 @@ namespace API.DTOs
         public int Id {get; set;}
 
         public string BuyerId {get; set;} = string.Empty;
-        public List<BasketItemDto> Items {get; set;}
+        public List<BasketItemDto> Items {get; set;} = new();
     }
 
 }
