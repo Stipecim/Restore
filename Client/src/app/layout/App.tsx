@@ -1,9 +1,8 @@
-
-import { Container, CssBaseline, ThemeProvider, createTheme} from "@mui/material";
+import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
 
 import { getCookie } from "../util/util";
@@ -16,45 +15,42 @@ function App() {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
-    const buyerId = getCookie('buyerId');
-    
-    if(buyerId) {
+    const buyerId = getCookie("buyerId");
+
+    if (buyerId) {
       agent.Basket.get()
-        .then(basket => dispatch(setBasket(basket)))
-        .catch(error => console.log(error))
+        .then((basket) => dispatch(setBasket(basket)))
+        .catch((error) => console.log(error))
         .finally(() => setLoading(false));
-    }else {
+    } else {
       setLoading(false);
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   const [darkMode, setDarkMode] = useState(false);
-  const paletteType = darkMode ? 'dark' : 'light';
+  const paletteType = darkMode ? "dark" : "light";
 
   const theme = createTheme({
     palette: {
       mode: paletteType,
       background: {
-        default: paletteType === 'light' ? '#eaeaea' : '#121212'
-      }
-    }
-  })
+        default: paletteType === "light" ? "#eaeaea" : "#121212",
+      },
+    },
+  });
 
-  
-
-  if(loading) return <LoadingComponent message="Initializing..." />
+  if (loading) return <LoadingComponent message="Initializing..." />;
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar />
       <CssBaseline />
-      <Header setDarkMode={setDarkMode} darkMode={darkMode}/>
-      <Container sx={{marginTop: 4}}>
-        <Outlet/>
+      <Header setDarkMode={setDarkMode} darkMode={darkMode} />
+      <Container sx={{ marginTop: 4 }}>
+        <Outlet />
       </Container>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
