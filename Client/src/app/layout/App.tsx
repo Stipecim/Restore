@@ -1,32 +1,32 @@
 import { Container, CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Header from "./Header";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
 
-import { getCookie } from "../util/util";
-import agent from "../API/agent";
 import LoadingComponent from "./LoadingComponents";
 import { useAppDispatch } from "../store/configureStore";
-import { setBasket } from "../../features/baskets/basketSlice";
+import { fetchBasketAsync } from "../../features/baskets/basketSlice";
+import { fetchCurrentUser } from "../../features/account/accountSlice";
+import HomePage from "../../features/home/HomePage";
 
 function App() {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const buyerId = getCookie("buyerId");
-
-    if (buyerId) {
-      agent.Basket.get()
-        .then((basket) => dispatch(setBasket(basket)))
-        .catch((error) => console.log(error))
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
+  const initApp = useCallback( async () => {
+    try {
+      await dispatch(fetchCurrentUser());
+      await dispatch(fetchBasketAsync());
+    } catch (error) {
+      console.log(error);
     }
-  }, [dispatch]);
+  },[dispatch])
+  
+  useEffect(() => {
+    initApp().then(()=> setLoading(false));
+  }, [initApp]);
 
   const [darkMode, setDarkMode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
@@ -35,20 +35,24 @@ function App() {
     palette: {
       mode: paletteType,
       background: {
-        default: paletteType === "light" ? "#eaeaea" : "#121212",
+        default: (paletteType === "light") ? "#eaeaea" : "#121212",
       },
     },
   });
 
-  if (loading) return <LoadingComponent message="Initializing..." />;
+  
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar />
       <CssBaseline />
       <Header setDarkMode={setDarkMode} darkMode={darkMode} />
-      <Container sx={{ marginTop: 4 }}>
-        <Outlet />
-      </Container>
+      {
+        loading ? <LoadingComponent message='Initialising app...' />
+          : location.pathname === '/' ? <HomePage />
+          : <Container sx={{mt: 4}}>
+              <Outlet />
+            </Container>
+      }
     </ThemeProvider>
   );
 }
