@@ -3,7 +3,7 @@ import Header from "./Header";
 import { useCallback, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import LoadingComponent from "./LoadingComponents";
 import { useAppDispatch } from "../store/configureStore";
@@ -12,6 +12,7 @@ import { fetchCurrentUser } from "../../features/account/accountSlice";
 import HomePage from "../../features/home/HomePage";
 
 function App() {
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 

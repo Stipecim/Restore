@@ -44,7 +44,7 @@ namespace API.Controllers
             if (anonBasket != null)
             {
                 if (userBasket != null) _context.Baskets.Remove(userBasket);
-                anonBasket.BuyerId = user.UserName;
+                anonBasket.BuyerId = user.UserName!;
                 Response.Cookies.Delete("buyerId");
                 await _context.SaveChangesAsync();
             }
@@ -96,10 +96,12 @@ namespace API.Controllers
         [Authorize]
         [HttpGet("savedAddress")]
         public async Task<ActionResult<UserAddress>> GetSavedAddress() {
-            return await _userManager.Users
-                .Where(x => x.UserName == User.Identity.Name)
+            var address = await _userManager.Users
+                .Where(x => x.UserName == User.Identity!.Name)
                 .Select(user => user.Address)
                 .FirstOrDefaultAsync();
+            return address!;
+
         }
 
 

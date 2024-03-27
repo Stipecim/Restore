@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<BasketDto>> CreateOrUpdatePaymentIntent() {
             var basket = await _context.Baskets
-                .RetrieveBasketWithItems(User.Identity.Name)
+                .RetrieveBasketWithItems(User.Identity!.Name!)
                 .FirstOrDefaultAsync();
 
                 if(basket == null) return NotFound();
@@ -65,7 +65,7 @@ namespace API.Controllers
             var order = await _context.Orders.FirstOrDefaultAsync(x => 
                 x.PaymentIntentId == charge.PaymentIntentId);
             
-            if(charge.Status == "succeeded") order.OrderStatus = OrderStatus.PaymentRecived;
+            if(charge.Status == "succeeded") order!.OrderStatus = OrderStatus.PaymentRecived;
 
             await _context.SaveChangesAsync();
 

@@ -21,10 +21,10 @@ namespace API.Extensions
                     Subtotal = order.Subtotal,
                     OrderStatus = order.OrderStatus.ToString(),
                     Total = order.GetTotal(),
-                    OrderItems = order.OrderItems.Select(item => new OrderItemDto {
-                        ProductId = item.ItemOrdered.ProductId,
-                        Name = item.ItemOrdered.Name,
-                        PictureUrl =item.ItemOrdered.PictureUrl,
+                    OrderItems = order.OrderItems!.Select(item => new OrderItemDto {
+                        ProductId = item.ItemOrdered!.ProductId,
+                        Name = item.ItemOrdered.Name!,
+                        PictureUrl =item.ItemOrdered.PictureUrl!,
                         Price = item.Price,
                         Quantity = item.Quantity
                     }).ToList()
