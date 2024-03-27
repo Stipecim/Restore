@@ -7,11 +7,11 @@ import AboutPage from "../../features/about/AboutPage";
 import ServerError from "../errors/ServerError";
 import NotFound from "../errors/NotFound";
 import BasketPage from "../../features/baskets/BasketPage";
-import CheckoutPage from "../../features/Checkout/CheckoutPage";
 import Register from "../../features/account/Register";
 import Login from "../../features/account/Login";
 import RequireAuth from "./RequireAuth";
 import Orders from "../../features/orders/Orders";
+import CheckoutWrapper from "../../features/Checkout/CheckoutWrapper";
 
 export const router = createBrowserRouter(([
   {
@@ -21,7 +21,7 @@ export const router = createBrowserRouter(([
       {
         //authenticated routes
         element: <RequireAuth />, children: [
-          { path: "checkout", element: <CheckoutPage /> },
+          { path: "checkout", element: <CheckoutWrapper /> },
           { path: "orders", element: <Orders/> }
         ], 
       },
