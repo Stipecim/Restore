@@ -4,6 +4,7 @@ import { decrement, increment } from "./counterSlice";
 
 
 export default function ContactPage() {
+    
     const dispatch = useAppDispatch();
     const {data, title} = useAppSelector(state => state.counter);
 

@@ -20,7 +20,7 @@ export default function Catalog() {
     const {products, filtersLoaded, brands, types, metaData} = useProducts();
     const { productParams } = useAppSelector(state => state.catalog);
     const dispatch = useAppDispatch();
-    console.log(brands);
+    //console.log(brands);
 
     if (!filtersLoaded) return <LoadingComponent message='Loading products...' />
 
